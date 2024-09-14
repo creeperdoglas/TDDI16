@@ -179,6 +179,11 @@ void AVL_Tree_Node<Comparable>::insert(const Comparable &x, Node_Pointer &t) {
     }
 }
 
+// our homegrown remove function
+template <typename Comparable>
+void AVL_Tree_Bode<Comparable>::remove(const Comparable &x, Node_Pointer &t){
+
+}
 /**
  * Print elements in ascending order.
  */
@@ -370,7 +375,7 @@ void AVL_Tree<Comparable>::insert(const Comparable &x) {
  */
 template <typename Comparable>
 void AVL_Tree<Comparable>::remove(const Comparable &x) {
-    throw AVL_Tree_error("remove: ska implementeras!");
+    Node::remove(x,root); //just nu, kanske ej funkar
 }
 
 /**
