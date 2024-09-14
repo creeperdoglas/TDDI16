@@ -181,8 +181,24 @@ void AVL_Tree_Node<Comparable>::insert(const Comparable &x, Node_Pointer &t) {
 
 // our homegrown remove function
 template <typename Comparable>
-void AVL_Tree_Bode<Comparable>::remove(const Comparable &x, Node_Pointer &t){
+void AVL_Tree_Node<Comparable>::remove(const Comparable &x, Node_Pointer &t){
+if (t == nullptr){
+    throw AVL_Tree_error("talet finns inte i trädet");
+}
+    if (x < t->element) {
+        remove(x, t->left);
+    } else if (t->element < x) {
+        remove(x, t->right);
+    } else {
+node_height:
+    
 
+
+
+    
+
+
+}
 }
 /**
  * Print elements in ascending order.
