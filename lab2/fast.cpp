@@ -7,58 +7,76 @@
 #include <vector>
 #include <unordered_map>
 
-using std::cout;
 using std::cerr;
+using std::cout;
 using std::endl;
 using std::string;
-using std::vector;
 using std::unordered_map;
+using std::vector;
 
-/**
- * Class that stores a summary of an image.
- *
- * This summary is intended to contain a high-level representation of the
- * important parts of an image. I.e. it shall contain what a human eye would
- * find relevant, while ignoring things that the human eye would find
- * irrelevant.
- *
- * To approximate human perception, we store a series of booleans that indicate
- * if the brightness of the image has increased or not. We do this for all
- * horizontal lines and vertical lines in a downsampled version of the image.
- *
- * See the lab instructions for more details.
- *
- * Note: You will need to use this data structure as the key in a hash table. As
- * such, you will need to implement equality checks and a hash function for this
- * data structure.
- */
-class Image_Summary {
+class Image_Summary
+{
 public:
-    // Horizontal increases in brightness.
     vector<bool> horizontal;
-
-    // Vertical increases in brightness.
     vector<bool> vertical;
+
+    bool operator==(const Image_Summary &other) const
+    {
+        return horizontal == other.horizontal && vertical == other.vertical;
+    }
 };
 
-// Compute an Image_Summary from an image. This is described in detail in the
-// lab instructions.
-Image_Summary compute_summary(const Image &image) {
-    const size_t summary_size = 8;
+namespace std
+{
+    template <>
+    struct hash<Image_Summary>
+    {
+        size_t operator()(const Image_Summary &summary) const
+        {
+            size_t h_hash = std::hash<vector<bool>>{}(summary.horizontal);
+            size_t v_hash = std::hash<vector<bool>>{}(summary.vertical);
+            return h_hash ^ (v_hash << 1);
+        }
+    };
+}
+
+Image_Summary compute_summary(const Image &image)
+{
+    const size_t summary_size = 16; // Öka storleken för bättre noggrannhet.
     Image_Summary result;
 
-    // TODO: Finish the implementation.
-    // The lines below are here to avoid warnings. They can be removed.
-    (void)image;
-    (void)summary_size;
+    result.horizontal.resize(summary_size);
+    result.vertical.resize(summary_size);
+
+    for (size_t y = 0; y < summary_size; ++y)
+    {
+        for (size_t x = 1; x < summary_size; ++x)
+        {
+            float current_brightness = image.pixel(x, y).brightness();
+            float previous_brightness = image.pixel(x - 1, y).brightness();
+            result.horizontal[y] = (current_brightness > previous_brightness);
+        }
+    }
+
+    for (size_t x = 0; x < summary_size; ++x)
+    {
+        for (size_t y = 1; y < summary_size; ++y)
+        {
+            float current_brightness = image.pixel(x, y).brightness();
+            float previous_brightness = image.pixel(x, y - 1).brightness();
+            result.vertical[x] = (current_brightness > previous_brightness);
+        }
+    }
 
     return result;
 }
 
-int main(int argc, const char *argv[]) {
+int main(int argc, const char *argv[])
+{
     WindowPtr window = Window::create(argc, argv);
 
-    if (argc < 2) {
+    if (argc < 2)
+    {
         cerr << "Usage: " << argv[0] << " [--nopause] [--nowindow] <directory>" << endl;
         cerr << "Missing directory containing files!" << endl;
         return 1;
@@ -67,30 +85,53 @@ int main(int argc, const char *argv[]) {
     vector<string> files = list_files(argv[1], ".jpg");
     cout << "Found " << files.size() << " image files." << endl;
 
-    if (files.size() <= 0) {
+    if (files.size() <= 0)
+    {
         cerr << "No files found! Make sure you entered a proper path!" << endl;
         return 1;
     }
 
     auto begin = std::chrono::high_resolution_clock::now();
 
-    /**
-     * TODO:
-     * - For each file:
-     *   - Load the file
-     *   - Compute its summary
-     */
+    unordered_map<Image_Summary, vector<string>> summary_map;
 
+    for (const auto &file : files)
+    {
+        Image img = load_image(file).shrink(32, 32); // Shrink images.
+        Image_Summary summary = compute_summary(img);
+
+        summary_map[summary].push_back(file);
+    }
 
     auto end = std::chrono::high_resolution_clock::now();
-    cout << "Total time: "
+    cout << "Summary computation took: "
          << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()
          << " milliseconds." << endl;
 
-    /**
-     * TODO:
-     * - Display sets of files with equal summaries
-     */
+    // Gör en noggrannare jämförelse för de bilder som har samma sammanfattning
+    for (const auto &entry : summary_map)
+    {
+        if (entry.second.size() > 1)
+        {
+            for (size_t i = 0; i < entry.second.size(); ++i)
+            {
+                for (size_t j = i + 1; j < entry.second.size(); ++j)
+                {
+                    // Gör en finare jämförelse med den gamla metoden från slow.cpp
+                    Image img1 = load_image(entry.second[i]).shrink(32, 32);
+                    Image img2 = load_image(entry.second[j]).shrink(32, 32);
+                    double difference = img1.compare_to(img2);
+
+                    // Använd samma tröskelvärde som i slow.cpp
+                    if (difference <= 0.01)
+                    {
+                        vector<string> matches = {entry.second[i], entry.second[j]};
+                        window->report_match(matches);
+                    }
+                }
+            }
+        }
+    }
 
     return 0;
 }
