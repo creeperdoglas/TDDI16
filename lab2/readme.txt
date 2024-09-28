@@ -20,14 +20,14 @@ fast:
   tiden det tar att läsa in (och skala ner) bilderna separat från tiden det tar att
   jämföra bilderna. (Varför?)
 
-Notera att det har körts på ett eget wsl system vilket är varför de är mycket snabbare än liu datorerna.
+
 |--------+-----------+----------+----------|
 |        | inläsning | slow.cpp | fast.cpp |
 |--------+-----------+----------+----------|
 | tiny   | 93  ms    |  1,2 s   |          |
-| small  | 501 ms    |  2,9 s   |          |
-| medium | 2,2  s    |  5   s   |          |
-| large  | 51   s    |  450 s   |          |
+| small  | 0,55 s    |  0,73  s |   0,49 s |
+| medium | 2,4  s    |  3,1  s  |   2,2  s |
+| large  | 51   s    |  370 s   |   55  s  |
 |--------+-----------+----------+----------|
 
 
