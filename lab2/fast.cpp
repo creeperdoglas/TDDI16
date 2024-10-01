@@ -33,6 +33,7 @@ namespace std
     {
         size_t operator()(const Image_Summary &summary) const
         {
+            // består av två vektorer(horizontal och vertical) som lagrar information om hur ljusstyrkan i bilden förändras horisontellt och vertikalt.
             size_t h_hash = std::hash<vector<bool>>{}(summary.horizontal);
             size_t v_hash = std::hash<vector<bool>>{}(summary.vertical);
             return h_hash ^ (v_hash << 1);
@@ -92,7 +93,7 @@ int main(int argc, const char *argv[])
     }
 
     auto begin = std::chrono::high_resolution_clock::now();
-
+    // En unordered_map används för att gruppera bilderna baserat på deras sammanfattningar.Varje unikt Image_Summary fungerar som en nyckel, och en lista över bildfiler som har samma sammanfattning lagras som värde. för att snabbt identifiera potentiella dubbletter utan att behöva göra parvisa jämförelser av alla bilder.'
     unordered_map<Image_Summary, vector<string>> summary_map;
 
     for (const auto &file : files)
