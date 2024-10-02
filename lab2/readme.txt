@@ -1,7 +1,9 @@
 Bildmatchning
 =============
 
-Kommer även lägga till en alternativ fil som löser det värsta fallet. denna kommer inte vara lika seg men öka falase positives, ombads göra detta för labassistenenten, notera att resten av readme filen utgår från det segare fallet dock.
+Uppdatering:
+Kommer även lägga till en alternativ fil som löser det värsta fallet. denna kommer inte vara lika seg men öka false positives (under test i medium samma dock), ombads göra detta för labassistenenten, notera att resten av readme filen utgår från det segare fallet dock. 
+Skulle nog därför personligen välja FasterAlternative men väljer att lämna in båda då jag redan skrivit readme för den andra :D.
 
 
 - Ungefärligt antal timmar spenderade på labben (valfritt):
@@ -19,6 +21,7 @@ Läsning av filer: O(n)
 Bildläsning och sammandragsberäkning: O(n)
 Lagring i unordered_map: O(n)
 sammafattning O(n^2) i värsta fall. men kommer ej ske i det här fallet.
+FasterAlternative har inte det värsta fallet.
 
 
 - Hur lång tid tar det att köra "slow.cpp" respektive "fast.cpp" på de olika
@@ -70,6 +73,5 @@ Den är känslig för små translationer, rotationer, eller förändringar i lju
   åtminstone en fördel med din metod.
   
   Som tidigare nämnt I Svagheter. PHash skulle kunne användas, skulle ta bort problemet som vår lösning har då den mot små bortser förändringar i ljusstyrka, brus och även vissa små geometriska skillnader då den omvandlar till gråskala. men tar längre tid och compute_summary skulle behövas göras om. Sammfattat är vår metod snabbast men har lite större risk för att missa.
-
-
+  Nu även lagt till ett snabbare alternativ med namnet FasterAlternative.cpp , som är samma men utan finkontrollen.
 
