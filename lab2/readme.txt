@@ -30,7 +30,7 @@ sammafattning O(n^2) i värsta fall. men kommer ej ske i det här fallet.
 
 
 |--------+-----------+----------+----------|
-|        | inläsning | slow.cpp | fast.cpp |
+|        | inläsning | slow.cpp |fast.cpp(tot)|
 |--------+-----------+----------+----------|
 | tiny   | 93  ms    |  88 ms   |   67 ms  |
 | small  | 0,55 s    |  0,73  s |   0,49 s |

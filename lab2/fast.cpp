@@ -44,8 +44,9 @@ namespace std
 Image_Summary compute_summary(const Image &image)
 {
     const size_t summary_size = 16; // Öka storleken för bättre noggrannhet.
-    Image_Summary result;
 
+    // initierng
+    Image_Summary result;
     result.horizontal.resize(summary_size);
     result.vertical.resize(summary_size);
 
@@ -57,6 +58,8 @@ Image_Summary compute_summary(const Image &image)
             float previous_brightness = image.pixel(x - 1, y).brightness();
             result.horizontal[y] = (current_brightness > previous_brightness);
         }
+        // Denna jämförelse returnerar true om ljusstyrkan hos den nuvarande pixeln är större än ljusstyrkan hos den föregående, och false annars.
+        // Det booleska resultatet lagras i result.horizontal[y], vilket representerar om ljusstyrkan ökar från vänster till höger på rad
     }
 
     for (size_t x = 0; x < summary_size; ++x)
@@ -93,7 +96,7 @@ int main(int argc, const char *argv[])
     }
 
     auto begin = std::chrono::high_resolution_clock::now();
-    // En unordered_map används för att gruppera bilderna baserat på deras sammanfattningar.Varje unikt Image_Summary fungerar som en nyckel, och en lista över bildfiler som har samma sammanfattning lagras som värde. för att snabbt identifiera potentiella dubbletter utan att behöva göra parvisa jämförelser av alla bilder.'
+    // En unordered_map används för att gruppera bilderna baserat på deras sammanfattningar.Varje unikt Image_Summary fungerar som en nyckel, och en lista över bildfiler som har samma sammanfattning lagras som värde. för att snabbt identifiera potentiella dubbletter utan att behöva göra parvisa jämförelser av alla bilder.
     unordered_map<Image_Summary, vector<string>> summary_map;
 
     for (const auto &file : files)
