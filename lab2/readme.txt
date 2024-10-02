@@ -1,6 +1,9 @@
 Bildmatchning
 =============
 
+Kommer även lägga till en alternativ fil som löser det värsta fallet. denna kommer inte vara lika seg men öka falase positives, ombads göra detta för labassistenenten, notera att resten av readme filen utgår från det segare fallet dock.
+
+
 - Ungefärligt antal timmar spenderade på labben (valfritt):
  5-10
 
