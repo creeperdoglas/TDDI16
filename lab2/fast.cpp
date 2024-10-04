@@ -40,35 +40,38 @@ namespace std
         }
     };
 }
-
 Image_Summary compute_summary(const Image &image)
 {
-    const size_t summary_size = 16; // Öka storleken för bättre noggrannhet.
+    const size_t summary_size = 8; // Öka storleken för bättre noggrannhet.
 
-    // initierng
+    Image shrunk_image = image.shrink(summary_size + 1, summary_size + 1);
+
     Image_Summary result;
-    result.horizontal.resize(summary_size);
-    result.vertical.resize(summary_size);
+    result.horizontal.resize(summary_size * (summary_size + 1));
+    result.vertical.resize(summary_size * (summary_size + 1));
 
-    for (size_t y = 0; y < summary_size; ++y)
+    for (size_t y = 0; y < summary_size + 1; ++y)
     {
-        for (size_t x = 1; x < summary_size; ++x)
+        for (size_t x = 1; x < summary_size + 1; ++x)
         {
-            float current_brightness = image.pixel(x, y).brightness();
-            float previous_brightness = image.pixel(x - 1, y).brightness();
-            result.horizontal[y] = (current_brightness > previous_brightness);
+            float current_brightness = shrunk_image.pixel(x, y).brightness();
+            float previous_brightness = shrunk_image.pixel(x - 1, y).brightness();
+
+            // Store the comparison result: horizontal changes along the row.
+            result.horizontal[y * summary_size + (x - 1)] = (current_brightness > previous_brightness);
         }
-        // Denna jämförelse returnerar true om ljusstyrkan hos den nuvarande pixeln är större än ljusstyrkan hos den föregående, och false annars.
-        // Det booleska resultatet lagras i result.horizontal[y], vilket representerar om ljusstyrkan ökar från vänster till höger på rad
     }
+    // Denna jämförelse returnerar true om ljusstyrkan hos den nuvarande pixeln är större än ljusstyrkan hos den föregående, och false annars.
+    // Det booleska resultatet lagras i result.horizontal[y], vilket representerar om ljusstyrkan ökar från vänster till höger på rad
 
-    for (size_t x = 0; x < summary_size; ++x)
+    for (size_t x = 0; x < summary_size + 1; ++x)
     {
-        for (size_t y = 1; y < summary_size; ++y)
+        for (size_t y = 1; y < summary_size + 1; ++y)
         {
-            float current_brightness = image.pixel(x, y).brightness();
-            float previous_brightness = image.pixel(x, y - 1).brightness();
-            result.vertical[x] = (current_brightness > previous_brightness);
+            float current_brightness = shrunk_image.pixel(x, y).brightness();
+            float previous_brightness = shrunk_image.pixel(x, y - 1).brightness();
+
+            result.vertical[x * summary_size + (y - 1)] = (current_brightness > previous_brightness);
         }
     }
 
@@ -102,7 +105,7 @@ int main(int argc, const char *argv[])
 
     for (const auto &file : files)
     {
-        Image img = load_image(file).shrink(32, 32);
+        Image img = load_image(file);
         Image_Summary summary = compute_summary(img);
 
         summary_map[summary].push_back(file);
