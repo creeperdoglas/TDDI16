@@ -41,8 +41,8 @@ inläsning är endast för slow, slow.cpp är hur lång tid matchning tog och fa
 - Testa olika värden på "summary_size" (exempelvis mellan 6 och 10). Hur
   påverkar detta vilka dubbletter som hittas i datamängden "large"?
 
-  högre värde innebär mindre matchningar. därför bra att hitta en "sweet spot" som inte tar bort liknande men inte ger false positives. 5 på 6 , 8 på 8 och 9 på 10.
-
+bra att hitta en "sweet spot" som inte tar bort liknande men inte ger false positives. 5 på 6 , 8 på 8 och 9 på 10 .
+för låg ger false positives, för hög tar bort liknande.
 
 - Algoritmen som implementeras i "compute_summary" kan ses som att vi beräknar
   en hash av en bild. Det är dock inte helt lätt att hitta en bra sådan funktion
