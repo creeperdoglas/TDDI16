@@ -42,7 +42,7 @@ namespace std
 }
 Image_Summary compute_summary(const Image &image)
 {
-    const size_t summary_size = 8; // Öka storleken för bättre noggrannhet.
+    const size_t summary_size = 8; // minska storlek för mer nogranhet
 
     Image shrunk_image = image.shrink(summary_size + 1, summary_size + 1);
 
