@@ -2,12 +2,11 @@ Bildmatchning
 =============
 
 Uppdatering:
-Kommer även lägga till en alternativ fil som löser det värsta fallet. denna kommer inte vara lika seg men öka false positives (under test i medium samma dock), ombads göra detta för labassistenenten, notera att resten av readme filen utgår från det segare fallet dock. 
-Skulle nog därför personligen välja FasterAlternative men väljer att lämna in båda då jag redan skrivit readme för den andra :D.
+komplettering klar
 
 
 - Ungefärligt antal timmar spenderade på labben (valfritt):
- 5-10
+ ungefär 10
 
 - Vad är tidskomplexiteten på "slow.cpp" och din implementation av "fast.cpp",
   uttryckt i antalet bilder (n).
@@ -16,39 +15,33 @@ slow:
 O(n^2)
 
 
-fast:
-Läsning av filer: O(n)
-Bildläsning och sammandragsberäkning: O(n)
-Lagring i unordered_map: O(n)
-sammafattning O(n^2) i värsta fall. men kommer ej ske i det här fallet.
-FasterAlternative har inte det värsta fallet.
+fast: 
+kanske skulle vara (m*n) då storleken på bilden spelar roll
+O(n)
 
 
 - Hur lång tid tar det att köra "slow.cpp" respektive "fast.cpp" på de olika
   datamängderna?
-  Tips: Använd flaggan "--nowindow" för enklare tidsmätning.
-  Tips: Det är okej att uppskatta tidsåtgången för de fall du inte orkar vänta
-  på att de blir klara.
-  Tips: Vid uppskattning av körtid för "slow.cpp" är det en bra idé att beräkna
-  tiden det tar att läsa in (och skala ner) bilderna separat från tiden det tar att
+
+tiden det tar att läsa in (och skala ner) bilderna separat från tiden det tar att
   jämföra bilderna. (Varför?) 
   för att inläsningen bör va ungefär samma för fast och slow.
 
-
+inläsning är endast för slow, slow.cpp är hur lång tid matchning tog och fast är den totala tiden för match+inläsning i fast.
 |--------+-----------+----------+----------|
-|        | inläsning | slow.cpp |fast.cpp(tot)|
+|        | inläsning | slow.cpp |fast.cpp  |
 |--------+-----------+----------+----------|
-| tiny   | 93  ms    |  88 ms   |   67 ms  |
-| small  | 0,55 s    |  0,73  s |   0,49 s |
+| tiny   | 93  ms    |  88 ms   |   64 ms  |
+| small  | 0,55 s    |  0,73  s |   0,5 s  |
 | medium | 2,4  s    |  3,1  s  |   2,2  s |
-| large  | 51   s    |  370 s   |   55  s  |
+| large  | 51   s    |  370 s   |   56  s  |
 |--------+-----------+----------+----------|
 
 
 - Testa olika värden på "summary_size" (exempelvis mellan 6 och 10). Hur
   påverkar detta vilka dubbletter som hittas i datamängden "large"?
 
-  lägre värde innebär mer grova reprensationer vilket ökar false positives. 
+  högre värde innebär mindre matchningar. därför bra att hitta en "sweet spot" som inte tar bort liknande men inte ger false positives. 5 på 6 , 8 på 8 och 9 på 10.
 
 
 - Algoritmen som implementeras i "compute_summary" kan ses som att vi beräknar
@@ -57,11 +50,15 @@ FasterAlternative har inte det värsta fallet.
   egenskaper behöver "compute_summary" ha för att vi ska kunna lösa problemet i
   labben? Tycker du att den givna funktionen uppfyller dessa egenskaper?
 
-Styrkor:
-Det är relativt enkelt att implementera och ger en snabb första filtrering.
-Sammanfattningen är stabil för små förändringar inom samma område, vilket gör att liknande mönster lätt identifieras.
-Svagheter:
-Den är känslig för små translationer, rotationer, eller förändringar i ljusstyrkan, vilket kan leda till att små variationer i samma bild får olika sammanfattning.
+  Tolerans mot små förändringar, Summeringen ska kunna hantera små variationer, som t.ex. små ljusförändringar.
+  Vår klarar det, men ej mot större förändringar som rotation/skala. Dock är större förändringar inte det man är ute efter i det här fallet.
+
+  Ha låg risk för kollison, en bra hash-funktion ska minimera risken för att två olika bilder får samma hash.
+  Vår baseras på enkla ljusjämförelser, finns en risk för kollisioner om olika bilder har liknande ljusmönster. alltså det skulle ge false positives.
+
+  Effektiv: den behöver vara Effektiv så att ej tar lång tid vid många bilder 
+  Vår är tillräckligt bra för att identifiera dubbletter som delar liknande ljusmönster och väldigt Effektiv.
+
 
 
 - Ser du några problem med metoden för att se om två bilder är lika dana?
@@ -72,6 +69,4 @@ Den är känslig för små translationer, rotationer, eller förändringar i lju
   inte vara snabbare än det som föreslås i labben, men du ska komma på
   åtminstone en fördel med din metod.
   
-  Som tidigare nämnt I Svagheter. PHash skulle kunne användas, skulle ta bort problemet som vår lösning har då den mot små bortser förändringar i ljusstyrka, brus och även vissa små geometriska skillnader då den omvandlar till gråskala. men tar längre tid och compute_summary skulle behövas göras om. Sammfattat är vår metod snabbast men har lite större risk för att missa.
-  Nu även lagt till ett snabbare alternativ med namnet FasterAlternative.cpp , som är samma men utan finkontrollen.
-
+ PHash skulle kunne användas, skulle ta bort problemet som vår lösning har då den mot små bortser förändringar i ljusstyrka, brus och även vissa små geometriska skillnader då den omvandlar till gråskala. men tar längre tid och compute_summary skulle behövas göras om. Sammfattat är vår metod snabbast men har lite större risk för att missa.

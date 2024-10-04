@@ -57,12 +57,9 @@ Image_Summary compute_summary(const Image &image)
             float current_brightness = shrunk_image.pixel(x, y).brightness();
             float previous_brightness = shrunk_image.pixel(x - 1, y).brightness();
 
-            // Store the comparison result: horizontal changes along the row.
             result.horizontal[y * summary_size + (x - 1)] = (current_brightness > previous_brightness);
         }
     }
-    // Denna jämförelse returnerar true om ljusstyrkan hos den nuvarande pixeln är större än ljusstyrkan hos den föregående, och false annars.
-    // Det booleska resultatet lagras i result.horizontal[y], vilket representerar om ljusstyrkan ökar från vänster till höger på rad
 
     for (size_t x = 0; x < summary_size + 1; ++x)
     {
