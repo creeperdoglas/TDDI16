@@ -95,13 +95,14 @@ int main(int argc, const char *argv[])
         return 1;
     }
 
-    auto begin = std::chrono::high_resolution_clock::now();
     // En unordered_map används för att gruppera bilderna baserat på deras sammanfattningar.Varje unikt Image_Summary fungerar som en nyckel, och en lista över bildfiler som har samma sammanfattning lagras som värde. för att snabbt identifiera potentiella dubbletter utan att behöva göra parvisa jämförelser av alla bilder.
+    auto begin = std::chrono::high_resolution_clock::now();
+
     unordered_map<Image_Summary, vector<string>> summary_map;
 
     for (const auto &file : files)
     {
-        Image img = load_image(file).shrink(32, 32); // Shrink images.
+        Image img = load_image(file).shrink(32, 32);
         Image_Summary summary = compute_summary(img);
 
         summary_map[summary].push_back(file);
@@ -112,28 +113,13 @@ int main(int argc, const char *argv[])
          << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()
          << " milliseconds." << endl;
 
-    // Gör en noggrannare jämförelse för de bilder som har samma sammanfattning
+    // Vi har nu en lista med alla bilder grupperade efter sina sammanfattningar.
     for (const auto &entry : summary_map)
     {
         if (entry.second.size() > 1)
         {
-            for (size_t i = 0; i < entry.second.size(); ++i)
-            {
-                for (size_t j = i + 1; j < entry.second.size(); ++j)
-                {
-                    // Gör en finare jämförelse med den gamla metoden från slow.cpp
-                    Image img1 = load_image(entry.second[i]).shrink(32, 32);
-                    Image img2 = load_image(entry.second[j]).shrink(32, 32);
-                    double difference = img1.compare_to(img2);
-
-                    // Använd samma tröskelvärde som i slow.cpp
-                    if (difference <= 0.01)
-                    {
-                        vector<string> matches = {entry.second[i], entry.second[j]};
-                        window->report_match(matches);
-                    }
-                }
-            }
+            // Rapportera alla bilder som dubbletter, eftersom de har samma sammanfattning.
+            window->report_match(entry.second);
         }
     }
 
