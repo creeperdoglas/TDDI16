@@ -23,7 +23,7 @@ struct Node
     Node *prev;
 };
 
-typedef unordered_set<string, hash<string>> Dictionary;
+typedef unordered_set<string> Dictionary;
 string const alphabet{"abcdefghijklmnopqrstuvwxyz"};
 
 void find_neighbors(const Dictionary &dict, Node &node)
@@ -55,6 +55,55 @@ void find_neighbors(const Dictionary &dict, Node &node)
  * 'dict'. Returvärdet är den ordkedja som hittats, första elementet ska vara 'from' och sista
  * 'to'. Om ingen ordkedja hittas kan en tom vector returneras.
  */
+// vector<string> find_shortest(Dictionary dict, const string &from, const string &to)
+// {
+//     vector<string> result;
+//     queue<Node> queue;
+//     vector<Node> node_history; // Behållning av alla noder som skapas
+
+//     Node begin{from, nullptr};
+//     queue.push(begin);
+//     node_history.push_back(begin); // Lägg till startnoden
+
+//     while (!queue.empty())
+//     {
+//         Node curr = queue.front();
+//         queue.pop();
+//         find_neighbors(dict, curr);
+
+//         for (const string &neighbor : curr.neighbors)
+//         {
+//             if (neighbor == to)
+//             {
+//                 // Vi har hittat målet, skapa resultatkedjan utan pekare
+//                 result.push_back(to);
+//                 Node temp = curr;
+//                 result.push_back(temp.word);
+
+//                 while (temp.word != from)
+//                 {
+//                     // Iterera bakåt genom att referera till node_history
+//                     temp = node_history[distance(node_history.begin(), find_if(node_history.begin(), node_history.end(), [&temp](Node const &n)
+//                                                                                { return n.word == temp.prev->word; }))];
+//                     result.push_back(temp.word);
+//                 }
+
+//                 reverse(result.begin(), result.end());
+//                 return result;
+//             }
+//             else
+//             {
+//                 dict.erase(neighbor);
+//                 Node next{neighbor, &node_history.back()}; // Skapa nästa nod utan dynamisk allokering
+//                 queue.push(next);
+//                 node_history.push_back(next); // Lägg till i historiklistan
+//             }
+//         }
+//     }
+
+//     reverse(result.begin(), result.end());
+//     return result;
+// }
 
 vector<string> find_shortest(Dictionary dict, const string &from, const string &to)
 {
