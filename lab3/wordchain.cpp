@@ -166,7 +166,6 @@ void read_questions(const Dictionary &dict)
         size_t space = line.find(' ');
         if (space != string::npos)
         {
-            // Fråga: hitta kortaste ordkedjan
             string first = line.substr(0, space);
             string second = line.substr(space + 1);
             vector<string> chain = find_shortest(dict, first, second);
@@ -176,7 +175,6 @@ void read_questions(const Dictionary &dict)
         }
         else
         {
-            // Fråga: hitta längsta av alla kortaste ordkedjor
             vector<string> chain = find_longest(dict, line);
 
             cout << line << ": ";
@@ -187,8 +185,8 @@ void read_questions(const Dictionary &dict)
 
 int main()
 {
-    Dictionary dict = read_dictionary(); // Läs in ordlistan
-    read_questions(dict);                // Läs och besvara alla frågor
+    Dictionary dict = read_dictionary();
+    read_questions(dict);
 
     return 0;
 }
