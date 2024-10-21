@@ -23,19 +23,20 @@ fast-lösningen går igenom varje punkt som en referenspunkt p och sorterar de �
   vettigt att vänta på hela beräkningen.
   Ge uppskattningar av körtiden (baserat på tidskomplexiteten)
   i övriga fall.
+
     
       N       brute       sortering
  ----------------------------------
-    150     
-    200
-    300
-    400
-    800
-   1600
-   3200
-   6400
-  12800
-
+    150       42  ms         13  ms
+    200       103 ms         26  ms
+    300       333 ms         56  ms
+    400       799 ms         94  ms
+    800       6 sekunder     259 ms
+   1600       50sekunder     1   sekund
+   3200       70 min(U)      4.3 sekunder
+   6400       18.8 timmar(U) 18  sekunder
+  12800       301 timmar(U)  80  sekunder
+          (U)=uppskattning
 
 - Energianvändning
 
