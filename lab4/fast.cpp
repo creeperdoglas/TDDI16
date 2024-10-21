@@ -1,10 +1,5 @@
-/*
- * fast < input.txt
- *
- * Compute and plot all line segments involving 4 points in input.txt
- */
-
 #include <iostream>
+#include <numeric>
 #include <algorithm>
 #include <vector>
 #include <chrono>
@@ -37,57 +32,56 @@ int main(int argc, const char *argv[])
         points.push_back(Point{x, y});
     }
 
-    // draw points to screen all at once
+    // Draw points to screen all at once
     window->draw_points(points);
 
-    // Sort points by their natural order. Makes finding endpoints a bit easier.
-    sort(points.begin(), points.end());
-
     auto begin = chrono::high_resolution_clock::now();
-    // Iterate over each point as the reference point
-    for (int i{0}; i < N; ++i)
+
+    // Iterate through all possible origins:
+    for (int o{0}; o < N; ++o)
     {
-        // Create a vector to hold points and their slopes relative to point[i]
-        vector<Point> slopePoints = points;
+        // Sort points based on the angle with respect to the origin point
+        // Instead of copying, we sort the indices.
+        vector<int> indices(N);
+        iota(indices.begin(), indices.end(), 0); // Create an index vector [0, 1, 2, ... N-1]
 
-        // Sort other points based on the slope with respect to points[i]
-        sort(slopePoints.begin() + i + 1, slopePoints.end(), PolarSorter(points[i]));
+        // Sort the indices based on slope with respect to point[o]
+        sort(indices.begin(), indices.end(), [&](int i, int j)
+             { return points[o].slopeTo(points[i]) < points[o].slopeTo(points[j]); });
 
-        // Now check for consecutive points with the same slope
-        int j = 1;
-        while (j < slopePoints.size() - 1)
+        // Now find all collinear points
+        for (std::vector<int>::size_type i = 0; i < indices.size(); ++i)
         {
-            vector<Point> collinear{points[i]};
+            vector<Point> series{points[o], points[indices[i]]};
 
-            // Check if the slope between consecutive points is the same
-            while (j < slopePoints.size() &&
-                   points[i].sameSlope(slopePoints[j], slopePoints[j + 1], tolerance))
+            for (std::vector<int>::size_type j = i + 1; j < indices.size(); ++j)
             {
-                collinear.push_back(slopePoints[j]);
-                j++;
+                if (abs(points[o].slopeTo(points[indices[i]]) - points[o].slopeTo(points[indices[j]])) < tolerance)
+                {
+                    series.push_back(points[indices[j]]);
+                }
+                else
+                {
+                    // Break early since the list is sorted
+                    break;
+                }
             }
 
-            // If we found 3 or more points, draw the line
-            if (collinear.size() >= 3)
+            // If we have at least 4 points (including the origin point)
+            if (series.size() >= 4)
             {
-                window->draw_line(collinear);
+                window->draw_line(series);
             }
-
-            // Move to the next set of points
-            j++;
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////////
-    // Draw any lines that you find in 'points' using the function 'window->draw_line'.
-    /////////////////////////////////////////////////////////////////////////////
-
     auto end = chrono::high_resolution_clock::now();
+
     cout << "Computing line segments took "
          << std::chrono::duration_cast<chrono::milliseconds>(end - begin).count()
          << " milliseconds." << endl;
 
-    // wait for user to terminate program
+    // Wait for user to terminate program
     window->run();
 
     return 0;

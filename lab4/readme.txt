@@ -2,17 +2,21 @@ Mönsterigenkänning
 ==================
 
 - Ungefärligt antal timmar spenderade på labben (valfritt):
-
+<5
 
 - Vad är tidskomplexiteten (i ordo-notation) för värstafallstiden av
   programmen som en funktion av N (antal punkter). Ge en kort motivering.
+ligger under brute och fast
 
   Matchar brute-lösningen sitt värstafall i praktiken, eller har den ett
   medelfall som är bättre?
+Ja, brute-lösningen matchar sitt värstafall i praktiken eftersom den tvingas genomgå alla möjliga kombinationer av fyra punkter, oavsett hur punkterna är placerade
 
 brute:
+algoritmen utför alltid  alla (𝑂𝑁^4) iterationer i den inre loopen, vilket innebär att medelfall och värstafall i princip har samma tidskomplexitet.
 
 fast:
+fast-lösningen går igenom varje punkt som en referenspunkt p och sorterar de återstående n - 1, sedan sorteringför varje N igen. vilket ger 𝑂(𝑁^2logN). fast matchar inte alltid värstafall då om punkterna är slumpvist distruberade kan det ge snabbare då de inte alltid ligger på linjer och då kan algoritmen snabbt avsluta vissa operationer.
 
 
 - Fyll i tabellen nedan med riktiga körtider i sekunder när det känns
@@ -22,7 +26,7 @@ fast:
     
       N       brute       sortering
  ----------------------------------
-    150
+    150     
     200
     300
     400
@@ -71,9 +75,11 @@ fast:
   också drar ström i "idle".)
 
 
-Förbrukning av brute på ett år: ? kWh
+basförbrukning (idle)  på 70.08 kwh.
 
-Förbrukning av sotering på ett år: ? kWh
+Förbrukning av brute på ett år: 1.36 ? kWh
 
-Skillnad: ? kWh
+Förbrukning av sotering på ett år: 0.00000029 (försumbar alltså) ? kWh
+
+Skillnad: 1.36? kWh
 
