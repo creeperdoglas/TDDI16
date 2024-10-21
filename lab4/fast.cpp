@@ -68,7 +68,7 @@ int main(int argc, const char *argv[])
             }
 
             // If we found 3 or more points, draw the line
-            if (collinear.size() >= 4)
+            if (collinear.size() >= 3)
             {
                 window->draw_line(collinear);
             }
