@@ -41,11 +41,11 @@ int main(int argc, const char *argv[])
     for (int o{0}; o < N; ++o)
     {
         // Sort points based on the angle with respect to the origin point
-        // Instead of copying, we sort the indices.
+        // Instead of copying, sort the indices.
         vector<int> indices(N);
         iota(indices.begin(), indices.end(), 0); // Create an index vector [0, 1, 2, ... N-1]
 
-        // Sort the indices based on slope with respect to point[o]
+        // Sort the indices based on slope to point[o]
         sort(indices.begin(), indices.end(), [&](int i, int j)
              { return points[o].slopeTo(points[i]) < points[o].slopeTo(points[j]); });
 
