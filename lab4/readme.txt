@@ -13,13 +13,13 @@ ligger under brute och fast
 Ja, brute-lösningen matchar sitt värstafall i praktiken eftersom den tvingas genomgå alla möjliga kombinationer av fyra punkter, oavsett hur punkterna är placerade
 
 brute:
-algoritmen utför alltid  alla (𝑂𝑁^4) iterationer i den inre loopen, vilket innebär att medelfall och värstafall i princip har samma tidskomplexitet.
+algoritmen har ett värsta fall på (𝑂𝑁^4). Brute-force-algoritmen har i praktiken ofta ett medelfall som är bättre än det teoretiska värsta fallet, men den kan fortfarande bli ineffektiv för stora datamängder. Medelfallet är i allmänhet bättre än värsta fallet eftersom algoritmen begränsar sökningen till punkter som faktiskt har samma lutning. Den använder dessutom funktionen sameSlope som skippar många onödiga kontroller. 
 
 fast:
 fast-lösningen går igenom varje punkt som en referenspunkt p och sorterar de återstående n - 1, sedan sorteringför varje N igen. vilket ger 𝑂(𝑁^2logN). fast matchar inte alltid värstafall då om punkterna är slumpvist distruberade kan det ge snabbare då de inte alltid ligger på linjer och då kan algoritmen snabbt avsluta vissa operationer.
 
 
-- Fyll i tabellen nedan med riktiga körtider i sekunder när det känns
+- Fyll i tabel  len nedan med riktiga körtider i sekunder när det känns
   vettigt att vänta på hela beräkningen.
   Ge uppskattningar av körtiden (baserat på tidskomplexiteten)
   i övriga fall.
@@ -78,9 +78,9 @@ fast-lösningen går igenom varje punkt som en referenspunkt p och sorterar de �
 
 basförbrukning (idle)  på 70.08 kwh.
 
-Förbrukning av brute på ett år: 1.36 ? kWh
+Förbrukning av brute på ett år: 70.08+228.6=298.68kWh
 
-Förbrukning av sotering på ett år: 0.00000029 (försumbar alltså) ? kWh
+Förbrukning av sotering på ett år: 70.08+0.0706≈70.15kWh
 
-Skillnad: 1.36? kWh
+Skillnad: 298.68−70.15=228.53kWh
 
