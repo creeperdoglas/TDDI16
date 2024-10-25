@@ -13,7 +13,7 @@ ligger under brute och fast
 Ja, brute-lösningen matchar sitt värstafall i praktiken eftersom den tvingas genomgå alla möjliga kombinationer av fyra punkter, oavsett hur punkterna är placerade
 
 brute:
-algoritmen har ett värsta fall på (𝑂𝑁^4). Brute-force-algoritmen har i praktiken ofta ett medelfall som är bättre än det teoretiska värsta fallet, men den kan fortfarande bli ineffektiv för stora datamängder. Medelfallet är i allmänhet bättre än värsta fallet eftersom algoritmen begränsar sökningen till punkter som faktiskt har samma lutning. Den använder dessutom funktionen sameSlope som skippar många onödiga kontroller. 
+algoritmen har ett värsta fall på (𝑂𝑁^4). Brute-force-algoritmen har i praktiken ofta ett medelfall som är bättre än det teoretiska värsta fallet, fortfarande inneffektivt för stora datamängder dock. Medelfallet är i allmänhet bättre än värsta fallet eftersom algoritmen begränsar sökningen till punkter som faktiskt har samma lutning. Den använder dessutom funktionen sameSlope som skippar många onödiga kontroller. 
 
 fast:
 fast-lösningen går igenom varje punkt som en referenspunkt p och sorterar de återstående n - 1, sedan sorteringför varje N igen. vilket ger 𝑂(𝑁^2logN). fast matchar inte alltid värstafall då om punkterna är slumpvist distruberade kan det ge snabbare då de inte alltid ligger på linjer och då kan algoritmen snabbt avsluta vissa operationer.
